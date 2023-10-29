@@ -1,0 +1,22 @@
+# Ignore Node.js modules
+node_modules/
+
+# Ignore logs and debugging files
+*.log
+*.log.*
+*.tmp
+debug.log
+
+# Ignore .env files (store configuration locally)
+.env
+
+# Ignore IDE and editor-specific files
+.vscode/
+.idea/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore npm package-lock files
+package-lock.json
