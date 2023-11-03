@@ -13,7 +13,7 @@ debug.log
 # Ignore IDE and editor-specific files
 .vscode/
 .idea/
-
+git ad
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
