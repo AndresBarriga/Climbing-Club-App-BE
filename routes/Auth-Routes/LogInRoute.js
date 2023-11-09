@@ -40,8 +40,8 @@ loginRouter.post('/', (req, res) => {
       }
 
       if (result) {
-        const token = jwt.sign({ user_id: user.id }, 'your-secret-key');
-        return res.json({ message: "Authorized", token });
+        const token = jwt.sign({ user_id: user.user_id }, 'your-secret-key');
+        return res.json({ message: "Authorized", token , initial_preferences: user.initial_preferences });
       } else {
         return res.json("Invalid email or password");
       }

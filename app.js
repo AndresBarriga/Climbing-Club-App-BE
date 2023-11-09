@@ -6,6 +6,7 @@ import Pool from 'pg-pool';
 import loginRouter from './routes/Auth-Routes/LogInRoute.js'
 import registrationRoute from './routes/Auth-Routes/RegisterRoute.js';
 import checkAuthRoute from './routes/Auth-Routes/Check-Auth.js';
+import initialUserPreferencesRouter from './routes/profileRoutes/initialUserPreferencesRouter.js';
 import cookieParser from 'cookie-parser';
 import jwt from "jsonwebtoken"
 
@@ -31,6 +32,7 @@ app.use(cookieParser());
 const corsOptions = {
   origin: 'http://localhost:3000', // Allow requests from your React app
   credentials: true, // Allow credentials (e.g., cookies)
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 app.use(cors(corsOptions)); 
 
@@ -42,6 +44,7 @@ app.get('/', loginRouter, (req, res) => {
 });
 app.use('/auth', loginRouter);
 app.use('/registration', registrationRoute);
+app.use('/initial-preferences', initialUserPreferencesRouter)
 
 // Middleware to authenticate the user for the "Private" route
 const privateRouteMiddleware = (req, res, next) => {
@@ -62,7 +65,7 @@ const privateRouteMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/private', privateRouteMiddleware, (req, res) => {
+app.get('/initial-information', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send the private data
   res.json({ message: 'This is private data' });
 });
@@ -70,6 +73,16 @@ app.get('/check-auth', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
+
+app.post('/initial-preferences', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code
+  res.sendStatus(200);
+});
+app.get('/dashboard', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code
+  res.sendStatus(200);
+});
+
 
 app.get('/logout', (req, res) => {
   console.log("Route was hit")
@@ -80,7 +93,6 @@ app.get('/logout', (req, res) => {
 process.on('exit', () => {
   pgPool.end();
 });
-
 
 
 app.listen(port, () => {
