@@ -5,10 +5,11 @@ import cors from 'cors';
 import Pool from 'pg-pool';
 import loginRouter from './routes/Auth-Routes/LogInRoute.js'
 import registrationRoute from './routes/Auth-Routes/RegisterRoute.js';
-import checkAuthRoute from './routes/Auth-Routes/Check-Auth.js';
 import initialUserPreferencesRouter from './routes/profileRoutes/initialUserPreferencesRouter.js';
 import cookieParser from 'cookie-parser';
 import jwt from "jsonwebtoken"
+import showProfileRouter from './routes/profileRoutes/showProfileUser.js';
+import logoutRouter from './routes/Auth-Routes/LogOutRoute.js';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -44,7 +45,10 @@ app.get('/', loginRouter, (req, res) => {
 });
 app.use('/auth', loginRouter);
 app.use('/registration', registrationRoute);
+app.use('/log-out', initialUserPreferencesRouter)
 app.use('/initial-preferences', initialUserPreferencesRouter)
+app.use('/show-profile', showProfileRouter )
+app.use('/logout',logoutRouter)
 
 // Middleware to authenticate the user for the "Private" route
 const privateRouteMiddleware = (req, res, next) => {
@@ -52,12 +56,14 @@ const privateRouteMiddleware = (req, res, next) => {
 
   if (authHeader) {
     const token = authHeader.split(' ')[1];
+    console.log(token)
 
     jwt.verify(token, 'your-secret-key', (err, user) => {
       if (err) {
         return res.sendStatus(403);
       }
       req.user = user;
+      console.log(user)
       next();
     });
   } else {
@@ -82,10 +88,20 @@ app.get('/dashboard', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
+app.get('/show-profile', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code
+  res.sendStatus(200);
+});
 
+app.get('/api/isAuthenticated', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code and a JSON response
+  res.json({ isAuthenticated: true });
+  res.sendStatus(200);
+});
 
 app.get('/logout', (req, res) => {
   console.log("Route was hit")
+  console.log(req.user)
   req.user = null;
   res.sendStatus(200);
 });
