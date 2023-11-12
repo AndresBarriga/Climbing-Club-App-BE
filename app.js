@@ -1,6 +1,4 @@
 import express from 'express';
-import session from 'express-session';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import Pool from 'pg-pool';
 import loginRouter from './routes/Auth-Routes/LogInRoute.js'
@@ -14,8 +12,6 @@ import logoutRouter from './routes/Auth-Routes/LogOutRoute.js';
 const app = express();
 const port = process.env.PORT || 3001;
 
-
-
 // Database connection
 const pgPool = new Pool({
   user: "postgres",
@@ -25,19 +21,16 @@ const pgPool = new Pool({
   port: 5432,
 })
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Allow requests from your React app
+  origin: 'http://localhost:3000', // Allow requests from Client - React app
   credentials: true, // Allow credentials (e.g., cookies)
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 app.use(cors(corsOptions)); 
-
-
 
 //Routes definition
 app.get('/', loginRouter, (req, res) => {
@@ -46,7 +39,7 @@ app.get('/', loginRouter, (req, res) => {
 app.use('/auth', loginRouter);
 app.use('/registration', registrationRoute);
 app.use('/log-out', initialUserPreferencesRouter)
-app.use('/initial-preferences', initialUserPreferencesRouter)
+app.use('/initial-information', initialUserPreferencesRouter)
 app.use('/show-profile', showProfileRouter )
 app.use('/logout',logoutRouter)
 
@@ -71,10 +64,7 @@ const privateRouteMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/initial-information', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send the private data
-  res.json({ message: 'This is private data' });
-});
+
 app.get('/check-auth', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
@@ -96,7 +86,7 @@ app.get('/show-profile', privateRouteMiddleware, (req, res) => {
 app.get('/api/isAuthenticated', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code and a JSON response
   res.json({ isAuthenticated: true });
-  res.sendStatus(200);
+  res.sendStatus(200)
 });
 
 app.get('/logout', (req, res) => {
