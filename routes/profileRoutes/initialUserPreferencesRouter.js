@@ -1,5 +1,6 @@
 import express from 'express';
 import Pool from 'pg-pool';
+import authenticateToken from './authenticateToken.js';
 
 // Set up PostgreSQL connection
 const pgPool = new Pool({
@@ -13,13 +14,14 @@ const pgPool = new Pool({
 const initialUserPreferencesRouter = express.Router();
 
 // Define the POST route for initial user preferences
-initialUserPreferencesRouter.post('/', (req, res) => {
+initialUserPreferencesRouter.post('/', authenticateToken ,(req, res) => {
   // Extract the user_id from the request
-  const user_id = req.user.user_id;
+  const user_id = req.user_id;
+  const { gender, birthday, location, climbingStyle, belayerDevice, climberType, material, climbingGradesBoulder, climbingGradesClimbing, favoriteClimbingDestinations, routePreferences, climbingPhilosophy, routeWishList } = req.body;
 
   // SQL query to insert the user preferences into the database
-  const sql = "INSERT INTO user_preferences (user_id) VALUES ($1)";
-  const values = [user_id];
+  const sql = `INSERT INTO user_preferences (user_id, gender, birthday, location, climbing_style, preferred_belayer_device, type_of_climber, climbing_equipment, climbing_grades_boulder, climbing_grades_climbing, favorite_climbing_destinations, route_preferences, climbing_philosophy, route_wish_list) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`;
+  const values = [user_id, gender, birthday, location, climbingStyle, belayerDevice, climberType, material, climbingGradesBoulder, climbingGradesClimbing, favoriteClimbingDestinations, routePreferences, climbingPhilosophy, routeWishList];
 
   // Execute the SQL query
   pgPool.query(sql, values, (err, data) => {

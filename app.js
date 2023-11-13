@@ -38,15 +38,14 @@ app.get('/', loginRouter, (req, res) => {
 });
 app.use('/auth', loginRouter);
 app.use('/registration', registrationRoute);
-app.use('/log-out', initialUserPreferencesRouter)
-app.use('/initial-information', initialUserPreferencesRouter)
+app.use('/initial-preferences', initialUserPreferencesRouter)
 app.use('/show-profile', showProfileRouter )
 app.use('/logout',logoutRouter)
 
 // Middleware to authenticate the user for the "Private" route
 const privateRouteMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
+  console.log("pivate Route Middelware was hit")
   if (authHeader) {
     const token = authHeader.split(' ')[1];
     console.log(token)
