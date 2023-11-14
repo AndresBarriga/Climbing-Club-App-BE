@@ -21,7 +21,7 @@ showProfileRouter.get('/', authenticateToken, (req, res) => {
   const user_id = req.user_id;
 
   // SQL query to get the user details from the database
-  const sqlUser = `SELECT name, last_name FROM users WHERE user_id = \$1`;
+  const sqlUser = `SELECT name, last_name, profile_picture FROM users WHERE user_id = \$1`;
   const valuesUser = [user_id];
   pgPool.query(sqlUser, valuesUser, (errUser, dataUser) => {
     if (errUser) {
