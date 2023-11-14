@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import jwt from "jsonwebtoken"
 import showProfileRouter from './routes/profileRoutes/showProfileUser.js';
 import logoutRouter from './routes/Auth-Routes/LogOutRoute.js';
+import editUserProfileRouter from './routes/profileRoutes/editUserProfile.js'
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -41,6 +42,7 @@ app.use('/registration', registrationRoute);
 app.use('/initial-preferences', initialUserPreferencesRouter)
 app.use('/show-profile', showProfileRouter )
 app.use('/logout',logoutRouter)
+app.use('/edit-profile', editUserProfileRouter)
 
 // Middleware to authenticate the user for the "Private" route
 const privateRouteMiddleware = (req, res, next) => {
@@ -73,6 +75,11 @@ app.post('/initial-preferences', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
+app.put('/edit-profile', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code
+  res.sendStatus(200);
+});
+
 app.get('/dashboard', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
