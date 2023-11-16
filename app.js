@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken"
 import showProfileRouter from './routes/profileRoutes/showProfileUser.js';
 import logoutRouter from './routes/Auth-Routes/LogOutRoute.js';
 import editUserProfileRouter from './routes/profileRoutes/editUserProfile.js'
+import locationsRouter from './routes/Locations-routes/locationsRouter.js';
 
 
 
@@ -44,6 +45,7 @@ app.use('/registration', registrationRoute);
 app.use('/initial-preferences', initialUserPreferencesRouter)
 app.use('/edit-profile', editUserProfileRouter)
 app.use('/show-profile', showProfileRouter )
+app.use('/climbing-locations', locationsRouter )
 app.use('/logout',logoutRouter)
 
 
@@ -91,7 +93,6 @@ app.put('/edit-profile/profile-picture', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
-
 app.get('/dashboard', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
