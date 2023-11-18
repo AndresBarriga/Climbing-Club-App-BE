@@ -10,13 +10,14 @@ import showProfileRouter from './routes/profileRoutes/showProfileUser.js';
 import logoutRouter from './routes/Auth-Routes/LogOutRoute.js';
 import editUserProfileRouter from './routes/profileRoutes/editUserProfile.js'
 import locationsRouter from './routes/Locations-routes/locationsRouter.js';
-
+import userFavouritesRouter from './routes/Locations-routes/favoritesRouter.js';
+import userFavouritesGetRouter from './routes/Locations-routes/favoritesRouterGet.js';
 
 
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Database connection
+// Database connections
 const pgPool = new Pool({
   user: "postgres",
   host: "localhost",
@@ -47,6 +48,8 @@ app.use('/edit-profile', editUserProfileRouter)
 app.use('/show-profile', showProfileRouter )
 app.use('/climbing-locations', locationsRouter )
 app.use('/logout',logoutRouter)
+app.use('/user_favourites', userFavouritesRouter);
+app.use('/user_favourites_get', userFavouritesGetRouter)
 
 
 

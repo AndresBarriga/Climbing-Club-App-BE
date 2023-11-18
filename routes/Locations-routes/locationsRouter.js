@@ -51,6 +51,7 @@ locationsRouter.get('/:country', (req, res) => {
 locationsRouter.get('/:country/:region', (req, res) => {
     const countryName = req.params.country;
     const regionName = req.params.region;
+    
     const sqlQuery = `SELECT * FROM areas WHERE regions = \$1`;
   
     pgPool.query(sqlQuery, [regionName], (err, dataAreas) => {
@@ -62,6 +63,21 @@ locationsRouter.get('/:country/:region', (req, res) => {
       res.json(dataAreas.rows);
     });
   });
+
+  locationsRouter.get('/:country/:region/:area', (req, res) => {
+   
+    const areaName= req.params.area
+    
+    const sqlQuery = `SELECT * FROM routes WHERE area = \$1`;
+    pgPool.query(sqlQuery, [areaName], (err, dataRoutes) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("Error fetching regions");
+      }        
+      res.json(dataRoutes.rows);
+    });
+  });
+
 
 
 export default locationsRouter;
