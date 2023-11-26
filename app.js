@@ -12,6 +12,8 @@ import editUserProfileRouter from './routes/profileRoutes/editUserProfile.js'
 import locationsRouter from './routes/Locations-routes/locationsRouter.js';
 import userFavouritesRouter from './routes/Locations-routes/favoritesRouter.js';
 import userFavouritesGetRouter from './routes/Locations-routes/favoritesRouterGet.js';
+import getUserLocation from './routes/endpoints/getUserLocation.js';
+import getAvailableLocations from './routes/endpoints/getAvailableLocations.js';
 
 
 const app = express();
@@ -50,7 +52,8 @@ app.use('/climbing-locations', locationsRouter )
 app.use('/logout',logoutRouter)
 app.use('/user_favourites', userFavouritesRouter);
 app.use('/user_favourites_get', userFavouritesGetRouter)
-
+app.use('/api/getUserLocation', getUserLocation)
+app.use('/api/getAvailableLocations', getAvailableLocations)
 
 
 // Middleware to authenticate the user for the "Private" route
