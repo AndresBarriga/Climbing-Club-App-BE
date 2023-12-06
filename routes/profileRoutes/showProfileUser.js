@@ -15,11 +15,9 @@ const showProfileRouter = express.Router();
 
 // Define the GET route for showing user profile
 showProfileRouter.get('/', authenticateToken, (req, res) => {
-
-  console.log("show profile route was hit")
   // Extract the user_id from the request
   const user_id = req.user_id;
-
+  console.log("user ID:" , user_id)
   // SQL query to get the user details from the database
   const sqlUser = `SELECT name, last_name, profile_picture FROM users WHERE user_id = \$1`;
   const valuesUser = [user_id];
@@ -37,7 +35,7 @@ showProfileRouter.get('/', authenticateToken, (req, res) => {
         console.error(errPreferences);
         return res.status(500).json("Error fetching user preferences");
       }
-      console.log({ user: dataUser.rows[0], preferences: dataPreferences.rows[0] });
+  
       // Send the fetched data back to the client
       res.json({ user: dataUser.rows[0], preferences: dataPreferences.rows[0] });
     });

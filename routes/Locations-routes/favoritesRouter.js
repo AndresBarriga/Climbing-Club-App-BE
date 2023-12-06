@@ -52,9 +52,6 @@ userFavouritesRouter.put('/', authenticateToken, (req, res) => {
     }
   }
 });
-
-
-
 });
 
 

@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken'
 
 // Middleware function to authenticate the JWT
 function authenticateToken(req, res, next) {
-  console.log('Aut Token route hit');
+  
   const authHeader = req.headers['authorization'];
-  console.log("auth header",authHeader)
+  
   const token = authHeader && authHeader.split(' ')[1];
-  console.log("token",token)
+  
   if (token == null) return res.sendStatus(401); // if there isn't any token send 401
 
   // Verify the token
@@ -16,7 +16,7 @@ function authenticateToken(req, res, next) {
       return res.sendStatus(403);
     }
     req.user_id = payload.user_id; 
-    console.log(req.user_id) // Extract the user_id from the payload of the token
+     // Extract the user_id from the payload of the token
     next();
   });
 }

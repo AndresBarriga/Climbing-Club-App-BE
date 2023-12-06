@@ -14,6 +14,10 @@ import userFavouritesRouter from './routes/Locations-routes/favoritesRouter.js';
 import userFavouritesGetRouter from './routes/Locations-routes/favoritesRouterGet.js';
 import getUserLocation from './routes/endpoints/getUserLocation.js';
 import getAvailableLocations from './routes/endpoints/getAvailableLocations.js';
+import createRequestRouter from './routes/Climbing-Request/createRequest.js';
+import getRequestRouter from './routes/Climbing-Request/getRequestPerUser.js';
+import deleteRequestRouter from './routes/Climbing-Request/deleteRequest.js';
+
 
 
 const app = express();
@@ -39,6 +43,26 @@ const corsOptions = {
 };
 app.use(cors(corsOptions)); 
 
+// Middleware to authenticate the user for the "Private" route
+const privateRouteMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+
+    jwt.verify(token, 'your-secret-key', (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
+
+
 //Routes definition
 app.get('/', loginRouter, (req, res) => {
   res.send('Welcome to the Climbing Club App!');
@@ -52,30 +76,12 @@ app.use('/climbing-locations', locationsRouter )
 app.use('/logout',logoutRouter)
 app.use('/user_favourites', userFavouritesRouter);
 app.use('/user_favourites_get', userFavouritesGetRouter)
+app.use('/api/create_request', createRequestRouter)
 app.use('/api/getUserLocation', getUserLocation)
 app.use('/api/getAvailableLocations', getAvailableLocations)
+app.use('/api/getActiveRequest', getRequestRouter)
+app.use('/api/deleteRequest' , deleteRequestRouter)
 
-
-// Middleware to authenticate the user for the "Private" route
-const privateRouteMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  console.log("pivate Route Middelware was hit")
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
-    console.log(token)
-
-    jwt.verify(token, 'your-secret-key', (err, user) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      req.user = user;
-      console.log(user)
-      next();
-    });
-  } else {
-    res.sendStatus(401);
-  }
-};
 
 
 app.get('/check-auth', privateRouteMiddleware, (req, res) => {
@@ -99,6 +105,14 @@ app.put('/edit-profile/profile-picture', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
+app.post('/api/create_request', privateRouteMiddleware, (req, res) => {
+  // If the user is authenticated, send a success status code
+  res.sendStatus(200);
+});
+app.get('/api/getActiveRequest',privateRouteMiddleware, (req, res) => {
+  
+  res.sendStatus(200);
+});
 app.get('/dashboard', privateRouteMiddleware, (req, res) => {
   // If the user is authenticated, send a success status code
   res.sendStatus(200);
@@ -113,6 +127,7 @@ app.get('/api/isAuthenticated', privateRouteMiddleware, (req, res) => {
   res.json({ isAuthenticated: true });
   res.sendStatus(200)
 });
+
 
 app.get('/logout', (req, res) => {
   console.log("Route was hit")
