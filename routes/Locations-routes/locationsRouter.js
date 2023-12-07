@@ -78,6 +78,19 @@ locationsRouter.get('/:country/:region', (req, res) => {
     });
   });
 
+  locationsRouter.get('/:country/:region/:area/:routeName', (req, res) => {
+   console.log("Route was hitttt")
+    const routeName= req.params.routeName
+    
+    const sqlQuery = `SELECT * FROM routes WHERE name = \$1`;
+    pgPool.query(sqlQuery, [routeName], (err, dataRoutes) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("Error fetching regions");
+      }        
+      res.json(dataRoutes.rows[0]);
+    });
+  });
 
 
 export default locationsRouter;

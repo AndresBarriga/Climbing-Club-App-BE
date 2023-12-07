@@ -17,6 +17,7 @@ import getAvailableLocations from './routes/endpoints/getAvailableLocations.js';
 import createRequestRouter from './routes/Climbing-Request/createRequest.js';
 import getRequestRouter from './routes/Climbing-Request/getRequestPerUser.js';
 import deleteRequestRouter from './routes/Climbing-Request/deleteRequest.js';
+import reviewsRouter from './routes/Locations-routes/routesReviews.js';
 
 
 
@@ -81,6 +82,7 @@ app.use('/api/getUserLocation', getUserLocation)
 app.use('/api/getAvailableLocations', getAvailableLocations)
 app.use('/api/getActiveRequest', getRequestRouter)
 app.use('/api/deleteRequest' , deleteRequestRouter)
+app.use('/reviews', reviewsRouter);
 
 
 

@@ -67,7 +67,7 @@ getAvailableLocations.get('/countries', (req, res) => {
    });
 
    getAvailableLocations.get('/countries/regions/area/route', (req, res) => {
-    const area = req.query.area; // Get the country value from the query parameters
+    const area = req.query.area; // Get the area value from the query parameters
     console.log(area)
 
     const sql = `
@@ -86,6 +86,8 @@ getAvailableLocations.get('/countries', (req, res) => {
     res.json({ preferences: routes.rows });
     });
    });
+
+
 
 
 

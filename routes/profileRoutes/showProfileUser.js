@@ -17,7 +17,7 @@ const showProfileRouter = express.Router();
 showProfileRouter.get('/', authenticateToken, (req, res) => {
   // Extract the user_id from the request
   const user_id = req.user_id;
-  console.log("user ID:" , user_id)
+  
   // SQL query to get the user details from the database
   const sqlUser = `SELECT name, last_name, profile_picture FROM users WHERE user_id = \$1`;
   const valuesUser = [user_id];
