@@ -18,6 +18,11 @@ import createRequestRouter from './routes/Climbing-Request/createRequest.js';
 import getRequestRouter from './routes/Climbing-Request/getRequestPerUser.js';
 import deleteRequestRouter from './routes/Climbing-Request/deleteRequest.js';
 import reviewsRouter from './routes/Locations-routes/routesReviews.js';
+import searchRouter from './routes/search/searchRoute.js';
+import searchNavigationRouter from './routes/search/searchNavigation.js';
+import getAllRequestRouter from './routes/Climbing-Request/getAllRequest.js';
+import showOtherProfileRouter from './routes/profileRoutes/showOtherProfileUser.js';
+import sendMessageRouter from './routes/messages/sendMessageRequest.js';
 
 
 
@@ -40,7 +45,7 @@ app.use(cookieParser());
 const corsOptions = {
   origin: 'http://localhost:3000', // Allow requests from Client - React app
   credentials: true, // Allow credentials (e.g., cookies)
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization','X-User-Id']
 };
 app.use(cors(corsOptions)); 
 
@@ -83,6 +88,11 @@ app.use('/api/getAvailableLocations', getAvailableLocations)
 app.use('/api/getActiveRequest', getRequestRouter)
 app.use('/api/deleteRequest' , deleteRequestRouter)
 app.use('/reviews', reviewsRouter);
+app.use('/search', searchRouter);
+app.use('/searchNavigation', searchNavigationRouter);
+app.use('/api/getAllRequests', getAllRequestRouter);
+app.use('/api/showOtherProfile', showOtherProfileRouter);
+app.use('/api/sendMessage', sendMessageRouter);
 
 
 

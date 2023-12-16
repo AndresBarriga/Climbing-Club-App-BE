@@ -1,3 +1,4 @@
+
 import express from 'express';
 import Pool from 'pg-pool';
 
@@ -91,6 +92,27 @@ locationsRouter.get('/:country/:region', (req, res) => {
       res.json(dataRoutes.rows[0]);
     });
   });
+
+  locationsRouter.get('/area-details/:area',  (req, res) => {
+    const { area } = req.params;
+  
+    // SQL query to get the region and country based on area
+    const getAreaDetailsQuery = `
+      SELECT region, country FROM areas 
+      WHERE name ILIKE $1
+    `;
+  
+    pgPool.query(getAreaDetailsQuery, [area], (getErr, getRes) => {
+      if (getErr) {
+        console.error(getErr);
+        res.status(500).json({ error: 'Database error' });
+      } else {
+        res.json(getRes.rows[0]);
+      }
+    });
+  });
+
+
 
 
 export default locationsRouter;
