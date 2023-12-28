@@ -13,8 +13,8 @@ const pgPool = new Pool({
 
 const getAllRequestRouter = express.Router();
 
-getAllRequestRouter.get('/', authenticateToken, (req, res) => {
-    console.log("route all request was hit")
+getAllRequestRouter.get('/otherUsers', authenticateToken, (req, res) => {
+    
     const userId = req.user_id;
   
     const sqlQuery = `

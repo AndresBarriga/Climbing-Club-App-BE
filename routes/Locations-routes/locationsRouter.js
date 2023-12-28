@@ -68,8 +68,10 @@ locationsRouter.get('/:country/:region', (req, res) => {
   locationsRouter.get('/:country/:region/:area', (req, res) => {
    
     const areaName= req.params.area
-    
+    console.log("areaName", areaName)
     const sqlQuery = `SELECT * FROM routes WHERE area = \$1`;
+
+    console.log("SQL QUERY", sqlQuery)
     pgPool.query(sqlQuery, [areaName], (err, dataRoutes) => {
       if (err) {
         console.error(err);

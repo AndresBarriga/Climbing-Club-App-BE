@@ -36,7 +36,7 @@ getRequestRouter.get('/:uid', authenticateToken, (req, res) => {
   console.log("route i want was hit")
   // Extract the request_id from the request parameters
   const uid = req.params.uid;
-  console.log("uid" ,uid)
+  
   // SQL query to get the request information
   const getRequestQuery = 'SELECT * FROM requests_info WHERE uid = $1';
 

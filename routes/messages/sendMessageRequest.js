@@ -43,4 +43,20 @@ sendMessageRouter.post('/start', authenticateToken, (req, res) => {
 
 });
 
+sendMessageRouter.post('/answer', authenticateToken, (req, res) => {
+    const { conversation_id, receiver_id, content, request_uid } = req.body;
+    const sender_id = req.user_id;
+
+    const messageSql = "INSERT INTO messages ( conversation_id, sender_id, receiver_id, content, timestamp, status, request_uid, is_system_message, is_deleted) VALUES ($1, $2, $3, $4,  NOW(), 'unread', $5, false, false)";
+    const messageValues = [ conversation_id, sender_id, receiver_id, content, request_uid];
+    
+    pgPool.query(messageSql, messageValues, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json("Message sending failed - error");
+        }
+        return res.json({ message: "Message sent successfully" });
+    });
+});
+
 export default sendMessageRouter;

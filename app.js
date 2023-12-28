@@ -23,7 +23,9 @@ import searchNavigationRouter from './routes/search/searchNavigation.js';
 import getAllRequestRouter from './routes/Climbing-Request/getAllRequest.js';
 import showOtherProfileRouter from './routes/profileRoutes/showOtherProfileUser.js';
 import sendMessageRouter from './routes/messages/sendMessageRequest.js';
-
+import getMessageRouter from './routes/messages/getMessages.js';
+import updateMessagesRouter from './routes/messages/updateMessages.js';
+import newMessagesRouter from './routes/messages/newMessages.js';
 
 
 const app = express();
@@ -93,32 +95,27 @@ app.use('/searchNavigation', searchNavigationRouter);
 app.use('/api/getAllRequests', getAllRequestRouter);
 app.use('/api/showOtherProfile', showOtherProfileRouter);
 app.use('/api/sendMessage', sendMessageRouter);
-
-
+app.use("/api/getMessage" , getMessageRouter);
+app.use("/api/updateMessagesStatus", updateMessagesRouter);
+app.use("/api/newMessages", newMessagesRouter);
 
 app.get('/check-auth', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 
 app.post('/initial-preferences', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.post('/initial-preferences/profile-picture', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.put('/edit-profile', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.put('/edit-profile/profile-picture', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.post('/api/create_request', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.get('/api/getActiveRequest',privateRouteMiddleware, (req, res) => {
@@ -126,16 +123,13 @@ app.get('/api/getActiveRequest',privateRouteMiddleware, (req, res) => {
   res.sendStatus(200);
 });
 app.get('/dashboard', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 app.get('/show-profile', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code
   res.sendStatus(200);
 });
 
 app.get('/api/isAuthenticated', privateRouteMiddleware, (req, res) => {
-  // If the user is authenticated, send a success status code and a JSON response
   res.json({ isAuthenticated: true });
   res.sendStatus(200)
 });
