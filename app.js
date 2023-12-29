@@ -45,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Allow requests from Client - React app
+  origin: ['http://localhost:3000','https://climbing-club-membership.vercel.app'],
   credentials: true, // Allow credentials (e.g., cookies)
   allowedHeaders: ['Content-Type', 'Authorization','X-User-Id']
 };
