@@ -1,16 +1,16 @@
 
 import express from 'express';
 import Pool from 'pg-pool';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 // Set up PostgreSQL connection
+const isProduction = process.env.NODE_ENV === 'production';
 const pgPool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "climbing",
-  password: "5813",
-  port: 5432,
-})
+  connectionString: isProduction ? process.env.DATABASE_URL : 'postgres://postgres:5813@localhost:5432/climbing',
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
+});
 
 const locationsRouter = express.Router();
 

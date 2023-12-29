@@ -26,19 +26,19 @@ import sendMessageRouter from './routes/messages/sendMessageRequest.js';
 import getMessageRouter from './routes/messages/getMessages.js';
 import updateMessagesRouter from './routes/messages/updateMessages.js';
 import newMessagesRouter from './routes/messages/newMessages.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 // Database connections
+const isProduction = process.env.NODE_ENV === 'production';
 const pgPool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "climbing",
-  password: "5813",
-  port: 5432,
-})
+  connectionString: isProduction ? process.env.DATABASE_URL : 'postgres://postgres:5813@localhost:5432/climbing',
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
