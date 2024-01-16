@@ -32,4 +32,31 @@ getAllRequestRouter.get('/otherUsers', authenticateToken, (req, res) => {
     });
   });
 
+  getAllRequestRouter.get('/forSpecificPlace', authenticateToken, (req, res) => {
+    const routeName = req.query.routeName;
+    const userId = req.user_id;
+
+    const sqlQuery = `
+        SELECT *
+        FROM requests_info
+        WHERE NOT user_id = $1 
+          AND EXISTS (
+            SELECT 1
+            FROM unnest(selected_routes::jsonb[]) elem
+            WHERE elem->>'name' ILIKE $2
+          )
+          AND expiration_date > now();
+    `;
+
+    pgPool.query(sqlQuery, [userId,`%${routeName}%`], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json("Error fetching requests");
+        }
+        res.json(data.rows);
+    });
+});
+  
+  
+
   export default getAllRequestRouter;

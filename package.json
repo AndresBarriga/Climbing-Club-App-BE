@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.0",
+    "axios": "^1.6.3",
     "bcrypt": "^5.1.1",
     "clerk": "^0.8.3",
     "cloudinary": "^1.41.0",
@@ -23,6 +25,8 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.11.3",
     "pg-pool": "^3.6.1"
   }
