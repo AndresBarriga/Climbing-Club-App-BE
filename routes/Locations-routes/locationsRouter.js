@@ -17,10 +17,6 @@ const locationsRouter = express.Router();
 // Define the GET route for showing user profile
 locationsRouter.get('/',  (req, res) => {
 
-  console.log("locations  route was hit")
-  // Extract the user_id from the request
-
-
   // SQL query to get the user details from the database
   const sqlQuery = `SELECT * FROM countries`;
 
@@ -113,8 +109,6 @@ locationsRouter.get('/:country/:region', (req, res) => {
       }
     });
   });
-
-
 
 
 export default locationsRouter;
