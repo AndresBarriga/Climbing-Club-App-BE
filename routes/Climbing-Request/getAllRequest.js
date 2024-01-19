@@ -56,6 +56,37 @@ getAllRequestRouter.get('/otherUsers', authenticateToken, (req, res) => {
         res.json(data.rows);
     });
 });
+
+getAllRequestRouter.get('/forMultiplePlaces', authenticateToken, (req, res) => {
+ const routeNames = req.query.routeNames.split(',').map(name => `'${name}'`).join(", ");
+ const userId = req.user_id;
+ 
+ const sqlQuery = `
+   SELECT elem->>'name' as route_name, COUNT(*) > 0 as has_requests
+   FROM requests_info
+   WHERE NOT user_id = $1 
+     AND EXISTS (
+       SELECT 1
+       FROM unnest(selected_routes::jsonb[]) elem
+       WHERE elem->>'name' = ANY(ARRAY[$2])
+     )
+     AND expiration_date > now()
+   GROUP BY route_name;
+ `;
+ 
+ pgPool.query(sqlQuery, [userId, routeNames], (err, data) => {
+   if (err) {
+     console.error(err);
+     return res.status(500).json("Error fetching requests");
+   }
+   const routeRequests = data.rows.reduce((acc, row) => {
+     acc[row.route_name] = row.has_requests;
+     return acc;
+   }, {});
+   res.json(routeRequests);
+ });
+});
+
   
   
 

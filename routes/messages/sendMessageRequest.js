@@ -60,4 +60,33 @@ sendMessageRouter.post('/answer', authenticateToken, (req, res) => {
     });
 });
 
+sendMessageRouter.post('/noRequest', authenticateToken, (req, res) => {
+    const { receiver_id, content } = req.body;
+    const sender_id = req.user_id;
+ 
+    const conversationSql = "INSERT INTO conversations (user1_id, user2_id) VALUES ($1, $2) RETURNING conversation_id";
+    const conversationValues = [sender_id, receiver_id];
+    pgPool.query(conversationSql, conversationValues, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json("Conversation start failed - error");
+        }
+        const conversation_id = data.rows[0].conversation_id;
+        // Continue to insert the message
+ 
+        const messageSql = "INSERT INTO messages ( conversation_id, sender_id, receiver_id, content, timestamp, status, is_system_message, is_deleted) VALUES ($1, $2, $3, $4, NOW(), 'unread', false, false)";
+        const messageValues = [ conversation_id, sender_id, receiver_id, content];
+        
+        pgPool.query(messageSql, messageValues, (err, data) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json("Message sending failed - error");
+            }
+            return res.json({ message: "Message sent successfully" });
+        });
+        
+    });
+ });
+
+
 export default sendMessageRouter;
