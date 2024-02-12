@@ -15,6 +15,24 @@ const pgPool = new Pool({
 // Create a new router for login
 const getMessageRouter = express.Router();
 
+getMessageRouter.get('/conversationsTable', authenticateToken, (req, res) => {
+  const userId = req.user_id; // Assuming the user ID is available in the request object
+
+  const sql = `
+  SELECT *
+  FROM conversations
+  `;
+
+  pgPool.query(sql, (err, data) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).json("Error fetching conversations table");
+      }
+
+      res.json({ userId, conversations: data.rows });
+  });
+});
+
 getMessageRouter.get('/conversations', authenticateToken, (req, res) => {
     const userId = req.user_id;
 
