@@ -23,18 +23,22 @@ import getAllRequestRouter from './routes/Climbing-Request/getAllRequest.js';
 import showOtherProfileRouter from './routes/profileRoutes/showOtherProfileUser.js';
 import sendMessageRouter from './routes/messages/sendMessageRequest.js';
 import getMessageRouter from './routes/messages/getMessages.js';
-import updateMessagesRouter from './routes/messages/updateMessages.js';
+import updateMessagesRouter from './routes/messages/updateToReadMessages.js';
 import newMessagesRouter from './routes/messages/newMessages.js';
 import recaptchaRoute from './routes/Auth-Routes/reCaptcha.js';
 import registrationPlusRoute from './routes/Auth-Routes/RegisterPlusRoute.js';
 import createPasswordRoute from './routes/Auth-Routes/PasswordCreationRoute.js';
 import recoverPasswordRoute from './routes/Auth-Routes/recoverPasswordRoute.js';
 import locationsMapRouter from './routes/mapRelatedRoutes/getLocationsMap.js';
+import notificationSettingsRouter from './routes/notifications/notificationSettings.js';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
-
+import getNotificationsRouter from './routes/notifications/getNotifications.js';
+import getRequestById from './routes/Climbing-Request/getRequestbyId.js';
+import postNotificationRead from './routes/notifications/postNotificationRead.js';
+import deleteConversationRouter from './routes/messages/deleteMessages.js';
 
 dotenv.config();
 
@@ -221,7 +225,11 @@ app.use("/api/register-plus", registrationPlusRoute)
 app.use('/api/create-password', createPasswordRoute)
 app.use('/api/recover-password', recoverPasswordRoute)
 app.use('/api/getLocationsForMap', locationsMapRouter)
-
+app.use('/api/notificationSettings', notificationSettingsRouter),
+app.use('/api/getNotifications', getNotificationsRouter)
+app.use('/api/getRequest', getRequestById)
+app.use('/api/notificationRead', postNotificationRead)
+app.use('/api/deleteConversation', deleteConversationRouter)
 
 app.get('/check-auth', privateRouteMiddleware, (req, res) => {
   res.sendStatus(200);
